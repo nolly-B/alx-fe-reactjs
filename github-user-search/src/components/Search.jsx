@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import githubService from "../services/githubService";
 
@@ -12,10 +13,10 @@ const Search = () => {
     setIsLoading(true);
     setError(null); // Clear any previous errors
     try {
-      const response = await githubApi.get(`/users/${username}`);
+      const response = await githubService.get(`/users/${username}`);
       setUser(response.data);
     } catch (error) {
-      setError(error.message);
+      setError("Looks like we can't find the user"); // Set specific error message
     } finally {
       setIsLoading(false);
     }
@@ -25,7 +26,6 @@ const Search = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">GitHub User Search</h1>
       <form onSubmit={handleSubmit}>
-        {" "}
         {/* Wrap input and button in a form */}
         <div className="mb-4">
           <input
