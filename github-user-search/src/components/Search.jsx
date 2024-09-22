@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
-import githubApi from '../services/githubApi';
+import React, { useState } from "react";
+import githubService from "../services/githubService";
 
-const HomePage = () => {
-  const [username, setUsername] = useState('');
+const Search = () => {
+  const [username, setUsername] = useState("");
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = async () => {
+    setIsLoading(true);
+    setError(null); // Clear any previous errors
     try {
       const response = await githubApi.get(`/users/${username}`);
       setUser(response.data);
-      setError(null);
     } catch (error) {
       setError(error.message);
-      setUser(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -31,23 +34,33 @@ const HomePage = () => {
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
           onClick={handleSearch}
+          disabled={isLoading}
         >
-          Search
+          {isLoading ? "Loading..." : "Search"}
         </button>
       </div>
       {error && <p className="text-red-500">{error}</p>}
       {user && (
         <div className="card p-4">
-          <img src={user.avatar_url} alt={user.login} className="w-24 h-24 rounded-full" />
+          <img
+            src={user.avatar_url}
+            alt={user.login}
+            className="w-24 h-24 rounded-full"
+          />
           <h2 className="text-2xl font-bold">{user.login}</h2>
           <p>{user.bio}</p>
-          <a href={user.html_url} target="_blank" className="text-blue-500 hover:underline">
+          <a
+            href={user.html_url}
+            target="_blank"
+            className="text-blue-500 hover:underline"
+          >
             View Profile
           </a>
         </div>
       )}
+      {!user && !isLoading && <p>Enter a username to search.</p>}
     </div>
   );
 };
 
-export default HomePage;
+export default Search;
