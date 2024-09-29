@@ -96,6 +96,16 @@ const Search = () => {
       {!users.length && !isLoading && <p>No results found.</p>}
     </div>
   );
+
+  users.map((user) => (
+    <div key={user.id} className="card p-4">
+      <a href={user.html_url} target="_blank" rel="noreferrer">
+        <h3 className="text-lg font-medium">{user.login}</h3>
+      </a>
+      {user.location && <p>Location: {user.location}</p>}
+      <p>Public Repositories: {user.public_repos}</p>
+    </div>
+  ));
 };
 
 export default Search;
