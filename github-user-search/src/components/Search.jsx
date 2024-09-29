@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import { fetchUsers } from "../services/githubService"; // Updated import
+import { fetchUsers } from "../services/githubService";
 
 const Search = () => {
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
   const [minRepos, setMinRepos] = useState(0);
-  const [users, setUsers] = useState([]); // Updated state for user list
+  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setUsers([]); // Clear previous results on new search
+    setUsers([]);
     try {
       const response = await fetchUsers(username, location, minRepos);
       setUsers(response.data.items);
     } catch (error) {
-      console.error(error); // Handle errors appropriately
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -26,8 +26,6 @@ const Search = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">GitHub User Search</h1>
       <form onSubmit={handleSubmit} className="flex flex-wrap">
-        {" "}
-        {/* Flexbox for responsive layout */}
         <div className="w-full md:w-1/2 mb-4">
           <label
             htmlFor="username"
@@ -35,6 +33,7 @@ const Search = () => {
           >
             Username
           </label>
+
           <input
             type="text"
             id="username"
@@ -44,6 +43,7 @@ const Search = () => {
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
+
         <div className="w-full md:w-1/2 mb-4">
           <label
             htmlFor="location"
@@ -51,6 +51,7 @@ const Search = () => {
           >
             Location
           </label>
+
           <input
             type="text"
             id="location"
@@ -60,6 +61,7 @@ const Search = () => {
             onChange={(e) => setLocation(e.target.value)}
           />
         </div>
+
         <div className="w-full md:w-1/2 mb-4">
           <label
             htmlFor="minRepos"
@@ -67,6 +69,7 @@ const Search = () => {
           >
             Min Repositories
           </label>
+
           <input
             type="number"
             id="minRepos"
@@ -76,6 +79,7 @@ const Search = () => {
             onChange={(e) => setMinRepos(parseInt(e.target.value))}
           />
         </div>
+
         <button
           type="submit"
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -84,11 +88,9 @@ const Search = () => {
           {isLoading ? "Loading..." : "Search"}
         </button>
       </form>
-      {/* Display search results here (updated logic needed) */}
-      {users.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Loop through users and display details */}
-        </div>
+
+      {users.length.map > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       )}
       {!users.length && isLoading && <p>Searching users...</p>}
       {!users.length && !isLoading && <p>No results found.</p>}
